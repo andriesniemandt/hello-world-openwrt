@@ -1,46 +1,45 @@
+#@IgnoreInspection BashAddShebang
+##############################################
+# Be very careful of spacing in this file.
+# Indents should be tabs, not spaces, and
+# there should be no trailing whitespace in
+# lines that are not commented.
+##############################################
+
 include $(TOPDIR)/rules.mk
 
-# Name, version and release number
-# The name and version of your package are used to define the variable to point to the build directory of your package: $(PKG_BUILD_DIR)
+# Name and release number of this package
 PKG_NAME:=helloworld
-PKG_VERSION:=1.0
 PKG_RELEASE:=1
+
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=git@github.com:andriesniemandt/hello-world-openwrt.git
+PKG_SOURCE_VERSION:=master
+PKG_VERSION:=1.0.0
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
+
+PKG_FIXUP:=autoreconf
 
 include $(INCLUDE_DIR)/package.mk
 
-# Package definition; instructs on how and where our package will appear in the overall configuration menu ('make menuconfig')
 define Package/helloworld
-  SECTION:=examples
-  CATEGORY:=Examples
-  TITLE:=Hello, World!
+	SECTION:=examples
+	CATEGORY:=Examples
+	TITLE:=A simple hello world app for OpenWRT
 endef
 
-# Package description; a more verbose description on what our package does
-define Package/helloworld/description
-  A simple "Hello, world!" -application.
+define Package/jo/description
+	A simple hello world app for OpenWRT
 endef
 
-# Package preparation instructions; create the build directory and copy the source code. 
-# The last command is necessary to ensure our preparation instructions remain compatible with the patching system.
-# define Build/Prepare
-#         mkdir -p $(PKG_BUILD_DIR)
-#         cp $(SOURCE_DIR)/* $(PKG_BUILD_DIR)
-#         $(Build/Patch)
-# endef
-
-# Package build instructions; invoke the target-specific compiler to first compile the source file, and then to link the file into the final executable
 define Build/Compile
-        $(TARGET_CC) $(TARGET_CFLAGS) -o $(PKG_BUILD_DIR)/helloworld.o -c $(PKG_BUILD_DIR)/helloworld.c
-        $(TARGET_CC) $(TARGET_LDFLAGS) -o $(PKG_BUILD_DIR)/$1 $(PKG_BUILD_DIR)/helloworld.o
+	$(call Build/Compile/Default)
 endef
 
-# Package install instructions; create a directory inside the package to hold our executable, and then copy the executable we built previously into the folder
 define Package/helloworld/install
-        $(INSTALL_DIR) $(1)/usr/bin
-        $(INSTALL_BIN) $(PKG_BUILD_DIR)/helloworld $(1)/usr/bin
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(CP) $(PKG_BUILD_DIR)/helloworld $(1)/usr/bin/
 endef
 
-# This command is always the last, it uses the definitions and variables we give above in order to get the job done
 $(eval $(call BuildPackage,helloworld))
