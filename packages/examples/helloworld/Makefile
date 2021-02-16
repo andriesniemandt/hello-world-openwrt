@@ -27,6 +27,7 @@ define Package/helloworld
 	SECTION:=examples
 	CATEGORY:=Examples
 	TITLE:=A simple hello world app for OpenWRT
+	DEPENDS:=+libc
 endef
 
 define Package/jo/description
@@ -42,4 +43,4 @@ define Package/helloworld/install
 	$(CP) $(PKG_BUILD_DIR)/helloworld $(1)/usr/bin/
 endef
 
-$(eval $(call BuildPackage,helloworld))
+$(eval $(call BuildPackage,helloworld,+libc))
