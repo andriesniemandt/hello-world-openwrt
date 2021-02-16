@@ -19,7 +19,7 @@ define Package/helloworld
 	TITLE:=A simple hello world app for OpenWRT
 endef
 
-define Package/jo/description
+define Package/helloworld/description
 	A simple hello world app for OpenWRT
 endef
 
@@ -28,8 +28,8 @@ define Build/Compile
 endef
 
 define Package/helloworld/install
-	$(INSTALL_DIR) $(1)/usr/bin
-	$(CP) $(PKG_BUILD_DIR)/helloworld $(1)/usr/bin/
+	$(INSTALL_DIR) $(1)/bin
+	$(CP) $(PKG_BUILD_DIR)/helloworld $(1)/bin/
 endef
 
 $(eval $(call BuildPackage,helloworld))
