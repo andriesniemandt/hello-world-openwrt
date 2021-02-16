@@ -35,10 +35,14 @@ define Package/jo/description
 endef
 
 define Build/Compile
-	$(call Build/Compile/Default)
+	$(MAKE) -C $(PKG_BUILD_DIR) \
+		CC="$(TARGET_CC)" \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)"
 endef
 
 define Package/helloworld/install
+	echo $(PKG_BUILD_DIR) && \
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(CP) $(PKG_BUILD_DIR)/helloworld $(1)/usr/bin/
 endef
